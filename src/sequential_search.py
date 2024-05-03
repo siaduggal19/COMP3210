@@ -7,15 +7,15 @@ def sequential_task_one(data , query) -> None :
 def sequential_task_two(data) -> None :
     #sorting the data so finding the skyline point would be much easier
     start = time.time()
-    
-    skyline_result = sorted(data , key= lambda x:x['x']) 
+    skyline_result = []
+    sorted_data = sorted(data , key= lambda x:x['x']) 
     write_data = ""
     point_string = ""
     write_data += "-------Sequential Skyline Search---------------\n"
 
     
     skyline_result = []
-    for point in data:
+    for point in sorted_data:
         is_dominated = False
         for skyline_point in skyline_result:
             if dominates_cord(point, skyline_point):
