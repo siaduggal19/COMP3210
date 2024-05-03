@@ -1,0 +1,3 @@
+Query ID - 1 Best point - 222247 with 9.025796513144362 km 
+Query ID - 2 Best point - 42540 with 21.796583621629388 km 
+Query ID - 3 Best point - 290720 with 22.64460822302143 km 
