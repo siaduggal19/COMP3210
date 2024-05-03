@@ -27,10 +27,9 @@ if __name__ == "__main__":
     #task 2 load data
     task2_data = load_data('data/city1.txt')
     start = time.time()
-    sequential_task_two(task2_data , query)
+    sequential_task_two(task2_data)
     total_runtime = time.time() - start
     print("Squential Skyline Total runtime in sec - " , total_runtime)
-    print("Squential Skyline Average runtime per query in sec - " , total_runtime/len(query))
     #create r-tree
     #bf_search
     
