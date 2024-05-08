@@ -1,8 +1,7 @@
 -------Sequential Skyline Search---------------
-Squential Skyline Total runtime in sec - 13.664377212524414 
+Squential Skyline Total runtime in sec - 26.182923555374146 
 
 id : 14825 , x : 100.0 ,'y': 331.19 
-id : 285868 , x : 100.0 ,'y': 108.94 
 id : 142350 , x : 100.01 ,'y': 54.22 
 id : 3 , x : 100.39 ,'y': 53.77 
 id : 233553 , x : 100.66 ,'y': 51.36 

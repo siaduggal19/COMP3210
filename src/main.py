@@ -3,6 +3,7 @@ from bf_search import bf_search , bf_search_divide_conquer
 from bbs_search import bbs_search , bbs_search_divide_conquer
 from utilities import load_data, write_to_file
 
+#from R_Tree import RTree
 import time
 
 if __name__ == "__main__":

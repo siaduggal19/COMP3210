@@ -24,7 +24,15 @@ def sequential_task_two(data) -> None :
         if not is_dominated:
             result = {'id' : point['id'] , 'x' : point['x'] , 'y' : point['y']}
             skyline_result.append(result)
-            point_string += f"id : {point['id']} , x : {point['x']} ,'y': {point['y']} \n"
+
+
+    #Revalidate Skyline point to ensure that any dorminated data is removed
+    valid_skyline_points = revalidate_skyline(skyline_result)
+    for point in valid_skyline_points:
+        point_string += f"id : {point['id']} , x : {point['x']} ,'y': {point['y']} \n"
+            
+
+
     total_runtime = time.time() - start    
     write_data += f"Squential Skyline Total runtime in sec - {total_runtime} \n"  
     write_data += "\n"
@@ -37,3 +45,17 @@ def dominates_meters(distance, skyline_data):
 
 def dominates_cord(point1, point2):
     return point1['x'] >= point2['x'] and point1['y'] >= point2['y']
+
+def revalidate_skyline(skyline):
+    new_skyline = []
+    for x in range(0 , len(skyline)):
+        is_dominated = False
+        for y in range (0 , len(skyline)):
+            if x == y:
+                continue
+            if dominates_cord(skyline[y] , skyline[x]):
+                is_dominated = True
+                break  
+        if not is_dominated:
+            new_skyline.append(skyline[x])
+    return new_skyline
