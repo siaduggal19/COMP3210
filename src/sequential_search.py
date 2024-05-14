@@ -48,6 +48,7 @@ def dominates_cord(point1, point2):
 
 def revalidate_skyline(skyline):
     new_skyline = []
+    
     for x in range(0 , len(skyline)):
         is_dominated = False
         for y in range (0 , len(skyline)):
@@ -58,4 +59,6 @@ def revalidate_skyline(skyline):
                 break  
         if not is_dominated:
             new_skyline.append(skyline[x])
+
+    new_skyline = sorted(new_skyline , key= lambda x:x['id'])
     return new_skyline
