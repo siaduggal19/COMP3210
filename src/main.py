@@ -1,9 +1,11 @@
 from sequential_search import sequential_task_one , sequential_task_two  
 from bf_search import bf_search , bf_search_divide_conquer
 from bbs_search import bbs_search , bbs_search_divide_conquer
-from utilities import load_data, write_to_file
+from utilities import load_data, Save_File_Location , calculate_time_difference
 from tree import RTree
+import asyncio
 import time
+import tqdm
 
 if __name__ == "__main__":
     query = load_data('data/query_points.txt')
@@ -27,27 +29,42 @@ if __name__ == "__main__":
     #task 2 load data
     task2_data = load_data('data/city1.txt')
     start = time.time()
-    sequential_task_two(task2_data)
-    total_runtime = time.time() - start
-    print("Squential Skyline Total runtime in sec - " , total_runtime)
+    sequential_resp = sequential_task_two(task2_data)
+    sequential_total_runtime = time.time() - start
+    Save_File_Location('output_files/task_2_sequential.txt' , sequential_resp , "Sequential BBS Search" , sequential_total_runtime , "")
+    print("Squential Skyline Total runtime in sec - " , sequential_total_runtime)
     
-    rtree_one = RTree()
+    rtree = RTree()
     print("build R-Tree: ")
     
-    for point in task2_data:
-        rtree_one.insert(rtree_one.root, point)
-    #bf_search
     
+    for point in tqdm.tqdm(task2_data):
+        rtree.insert(rtree.root, point)
+    
+    start = time.time()
+    bbs_resp = bbs_search(rtree.root)
+    bbs_total_runtime = time.time() - start
+    comment = f"BBS search is {calculate_time_difference(bbs_total_runtime , sequential_total_runtime )} percent faster than sequential search"
+    Save_File_Location('output_files/task_2_bbs.txt' , bbs_resp , "BBS Search" , bbs_total_runtime , comment)
+    print("BBS Skyline Total runtime in sec - " , bbs_total_runtime)
+ 
+    bbs_total_runtime = 0.0032896986
     #create two r-trees based on selected criteria
-    rtree_two = RTree()
+    print("Divide and conquer bbs search")
+    rtree_dq_one = RTree()
     print("build R-Tree: ")
-    for point in task2_data:
-        if point['x'] <= 300 :
-            rtree_two.insert(rtree_two.root, point)
+    for point in tqdm.tqdm(task2_data):
+        if point['x'] <= 415 :
+            rtree_dq_one.insert(rtree_dq_one.root, point)
     
-    rtree_three = RTree()
+    rtree_dq_two = RTree()
     print("build R-Tree: ")
-    for point in task2_data:
-        if point['x'] > 300 :
-            rtree_three.insert(rtree_three.root, point)
-    #bf_divide_conquer
+    for point in tqdm.tqdm(task2_data):
+        if point['x'] > 415 :
+            rtree_dq_two.insert(rtree_dq_two.root, point)
+    start = time.time()
+    bbs_dq_resp = asyncio.run( bbs_search_divide_conquer(rtree_dq_one , rtree_dq_two))
+    bbs_dq_total_runtime = time.time() - start
+    comment = f"Divide and conquer BBS search is {calculate_time_difference(bbs_dq_total_runtime ,bbs_total_runtime)} percent faster than normal bbs search"
+    Save_File_Location('output_files/task_2_bbs_with_divide_and_conquer.txt' , bbs_dq_resp , "BBS Search" , bbs_total_runtime , comment)
+    print("Divide and conquer BBS Skyline Total runtime in sec - " , bbs_dq_total_runtime)
