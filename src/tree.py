@@ -18,6 +18,13 @@ class Node(object): #node class
             'x2': -1,
             'y2': -1,
         }
+
+    def __lt__(self, other):
+        return len(self.data_points) < len(other.data_points)
+    
+    def __gt__(self, other):
+        return len(self.data_points) > len(other.data_points)
+    
     def perimeter(self):
         # only calculate the half perimeter here
         return (self.MBR['x2'] - self.MBR['x1']) + (self.MBR['y2'] - self.MBR['y1'])

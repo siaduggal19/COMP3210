@@ -52,6 +52,10 @@ def revalidate_skyline(skyline):
 def dominates_cord(point1, point2):
     return point1['x'] >= point2['x'] and point1['y'] >= point2['y']
 
+#will return the calculation of the lower part of the mbr
+def mbrpriority(node):
+    return node.MBR['x1'] + node.MBR['y2']
+
 def calculate_time_difference(time1, time2):
     difference = time2 - time1
     timer_diff = (difference / time2) * 100

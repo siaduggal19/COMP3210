@@ -1,29 +1,37 @@
 import heapq
-import itertools
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
-from utilities import  revalidate_skyline
+from utilities import  revalidate_skyline, mbrpriority
+
+
 
 def bbs_search(root):
     skyline = []
-    counter = itertools.count()
-    heap = []
-    #heapq.heappush(heap, (0, next(counter), root)
-    heapq.heappush(heap, (0, next(counter), root))
-    
+    #using a default lower mbr of 0
+    heap = [(0, root)] 
+    #converts the list to an heap
+    heapq.heapify(heap)
+
+    #while the heap is not empty
     while heap:
-        _,_, node = heapq.heappop(heap)
-        
+        #this would always take the node with the shortest lower bound and remove the item from the queue
+        _, node = heapq.heappop(heap)
+        #checking if the node is a leaf node meaning we have traversed the tree all the way down to the leaf
         if node.is_leaf():
+            #checking all the data set in the node
             for point in node.data_points:
                 if not is_dominated(point, skyline):
+                    #add items to the skyline list
                     skyline.append(point)
-                    #skyline = [p for p in skyline if not is_dominated(p, [point])]
         else:
-            for child in node.child_nodes:                
-                if not is_dominated({'x' : child.MBR['x1'],'y' : child.MBR['y1']}, [point for point in skyline]):
-                    #heapq.heappush(heap, (child.MBR['x1'], next(counter), child))
-                    heapq.heappush(heap, (child.MBR['x1'], next(counter), child))
+            for child in node.child_nodes:
+                #checking if the lower bound of the mbr of the child doesn't dominate any point in the skyline
+                #if the skyline data doesn't dominate the lowerbound we assume that there might be some skyline point in the MBR  
+                #and if the any of the skyline points dominates the lower bound of the rectangle we don't push the child to the sorted queue             
+                if not is_dominated({'x' : child.MBR['x1'],'y' : child.MBR['y2']}, [point for point in skyline]):
+                    #the lower bound is sumed so we can use that to order the heap
+                    lowerBound = mbrpriority(child)
+                    heapq.heappush(heap, (lowerBound, child))
+    #the revalidation is to ensure that all skyline points are valid skyline and also to sort the skyline
     return revalidate_skyline(skyline)
 
 
@@ -33,15 +41,11 @@ async  def bbs_search_divide_conquer(tree_one , tree_two):
 
     #since we divided our data based on x <300 be can assume that the data in the first skyline that is lesser than x is fine for x axis
     #we need to compare if we have any point in skyline two where y did better than what we had in skyline one
-    '''skyline_one = bbs_search(tree_one.root)
+    skyline_one = bbs_search(tree_one.root)
     skyline_two = bbs_search(tree_two.root)
- '''
-    task_one = asyncio.create_task(bbs_search_async_caller( executor , tree_one.root))
-    task_two = asyncio.create_task(bbs_search_async_caller(executor , tree_two.root))
-        
-    skyline_one, skyline_two = await asyncio.gather(task_one, task_two)
-
-
+    
+    #skyline one ontains minimum on x axis so it is expected that the point from the first skyline should be valid. 
+    #what we need to valided is the second skyline to find points in the second skyline that isnot dominated by data is the first skyline
     for point_one in skyline_two :
         is_dominated = False
         for point_two in skyline_one :
@@ -50,13 +54,7 @@ async  def bbs_search_divide_conquer(tree_one , tree_two):
                 break
         if not is_dominated:
             skyline_one.append(point_one)  
-    return revalidate_skyline(final_skyline)
-
-
-async def bbs_search_async_caller(executor, tree):
-    loop = asyncio.get_event_loop()
-    result = await loop.run_in_executor(executor, bbs_search, tree)
-    return result
+    return revalidate_skyline(skyline_one)
 
 def is_dominated(point, skyline):
     for sp in skyline:
