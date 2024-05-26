@@ -11,12 +11,6 @@ def load_data(file_path):
                            })
     return points
 
-def load_query_points(file_path):
-    """ Load query points from a text file. """
-    with open(file_path, 'r') as file:
-        queries = [{'id': int(line.split()[0]), 'x': float(line.split()[1]), 'y': float(line.split()[2])} for line in file]
-    return queries
-
 def Save_File_Location(path , data , programName , runtime , comment):
     write_data = ""
     point_string = ""
@@ -82,10 +76,3 @@ def get_distance_km(lat_one , lon_one , lat_two , lon_two):
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
     return R * c
-    
-def divide_dataset(data_points, dimension='x'):
-    # Sort data points based on the chosen dimension
-    sorted_points = sorted(data_points, key=lambda k: k[dimension])
-    # Divide into two subspaces
-    mid_index = len(sorted_points) // 2
-    return sorted_points[:mid_index], sorted_points[mid_index:]
