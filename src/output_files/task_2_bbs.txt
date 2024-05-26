@@ -1,4 +1,4 @@
-BBS Search Total runtime in sec - 0.0019986629486083984 
+BBS Search Total runtime in sec - 0.0 
 
 id : 3 , x : 100.39 ,'y': 53.77 
 id : 11862 , x : 106.39 ,'y': 50.11 
@@ -8,4 +8,4 @@ id : 159135 , x : 111.41 ,'y': 50.09
 id : 201884 , x : 100.8 ,'y': 50.96 
 id : 233553 , x : 100.66 ,'y': 51.36 
 id : 285868 , x : 100.0 ,'y': 108.94 
-BBS search is 99.99239487182659 percent faster than sequential search
+BBS search is 100.0 percent faster than sequential search
