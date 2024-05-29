@@ -1,5 +1,4 @@
-from utilities import  dominates_cord , revalidate_skyline
-import numpy as np
+from utilities import  dominates_cord , revalidate_skyline , euclidean_distance
 def sequential_scan_nearest_neighbor(query_point, data_points):
     """
     Find the nearest neighbor to a query point using the sequential scan method.
@@ -72,21 +71,4 @@ def sequential_task_two_optimized(data : list) -> None :
     valid_skyline_points = revalidate_skyline(skyline_result)
     return valid_skyline_points
 
-def euclidean_distance(point1, point2):
-    """
-    Calculate the Euclidean distance between two points in n-dimensional space.
-    
-    Args:
-    point1 (array): Coordinates of the first point.
-    point2 (array): Coordinates of the second point.
-    
-    Returns:
-    float: The Euclidean distance between the two points.
-    """
-    point1_array = np.array([float(point1['x']), float(point1['y'])])
-    point2_array = np.array([float(point2['x']), float(point2['y'])])
 
-    # Calculate the Euclidean distance
-    distance = np.sqrt(np.sum((point1_array - point2_array) ** 2))
-    
-    return distance  

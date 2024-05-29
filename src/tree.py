@@ -18,17 +18,17 @@ class Node(object): #node class
             'x2': -1,
             'y2': -1,
         }
-
+    #help when comparing two nodes
     def __lt__(self, other):
         return len(self.data_points) < len(other.data_points)
-    
+    #help when comparing two nodes
     def __gt__(self, other):
         return len(self.data_points) > len(other.data_points)
     
     def perimeter(self):
         # only calculate the half perimeter here
         return (self.MBR['x2'] - self.MBR['x1']) + (self.MBR['y2'] - self.MBR['y1'])
-
+    
     def is_overflow(self):
         if self.is_leaf():
             if self.data_points.__len__() > B: #Checking overflows of data points, B is the upper bound.
@@ -105,7 +105,8 @@ class RTree(object): #R tree class
             self.add_child(w, u2)
             if w.is_overflow(): #check the parent node recursively
                 self.handle_overflow(w)
-            
+
+    #This help in splitting the a node once the maximum allowed points is reached        
     def split(self, u):
         # split u into s1 and s2
         best_s1 = Node()

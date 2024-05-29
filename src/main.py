@@ -21,10 +21,10 @@ if __name__ == "__main__":
 print("start sequential search")
 start_time= time.time()
 result2=[]
-for q_point in query_points:
+for q_point in tqdm.tqdm(query_points):
     nearest_point, distance = sequential_scan_nearest_neighbor(q_point, data_points)
     # print("he",nearest_point)
-    result2.append(f"id={nearest_point['id']}, x={nearest_point['x']}, y={nearest_point['y']} query id ={q_point['id']}")
+    result2.append(f"id={nearest_point['id']}, x={nearest_point['x']}, y={nearest_point['y']}, query id ={q_point['id']} ")
     
 seq_time= time.time()- start_time
 average_time = seq_time / len(query_points)
@@ -39,7 +39,7 @@ with open(output_file, 'w') as file:
 
     #create r-tree
     rtree = RTree()  
-
+    print("Building r-tree for bf search")
     for point in tqdm.tqdm(data_points):
         #rtree.insert(rtree.root, {'x': point['x'], 'y': point['y']})
         rtree.insert(rtree.root, {'id': point['id'], 'x': point['x'], 'y': point['y']})
@@ -51,7 +51,7 @@ with open(output_file, 'w') as file:
     results = []
     for query in tqdm.tqdm(query_points):
         nearest,dist = bf_search(rtree, {'x': query['x'], 'y': query['y']})
-        results.append(f"id={nearest['id']}, x={nearest['x']}, y={nearest['y']} for query {query['id']}")
+        results.append(f"id={nearest['id']}, x={nearest['x']}, y={nearest['y']}, for query {query['id']}")
 
     total_time = time.time() - start_time
     average_time = total_time / len(query_points)
@@ -73,7 +73,7 @@ with open(output_file, 'w') as file:
     subspace1, subspace2 = divide_dataset(data_points, dimension='x')
     rtree1 = RTree()
     rtree2 = RTree()
-
+    print("building two r-tree for bf divide and conquer")
     for point in tqdm.tqdm(subspace1):
         rtree1.insert(rtree1.root, point)
 
@@ -83,11 +83,11 @@ with open(output_file, 'w') as file:
 
     start_time = time.time()
     result2=[]
-    for query in tqdm.tqdm(query_points):
+    for query in query_points:
         
         final_nearest,dist=bf_search_divide_conquer(rtree1 , rtree2, query)
             
-        result2.append(f"id={final_nearest['id']}, x={final_nearest['x']}, y={final_nearest['y']} for query {query['id']}")
+        result2.append(f"id={final_nearest['id']}, x={final_nearest['x']}, y={final_nearest['y']}, for query {query['id']}")
         
             
     total_time = time.time() - start_time
@@ -102,22 +102,22 @@ with open(output_file, 'w') as file:
         file.write(f"Total running time: {total_time:.2f} seconds\n")
         file.write(f"Average time per query: {average_time:.4f} seconds\n")
 
-
-
-
+    print("End of BF Seacrh")
 
     #task 2 load data
+    print("start skyline search")
     task2_data = load_data('data/city1.txt')
     start = time.time()
-    sequential_resp = sequential_task_two(task2_data)
+    
+    sequential_resp = tqdm.tqdm(sequential_task_two(task2_data))
     sequential_total_runtime = time.time() - start
-   
+    
     Save_File_Location('output_files/task_2_sequential.txt' , sequential_resp , "Sequential BBS Search" , sequential_total_runtime , "")
    
     print("Squential Skyline Total runtime in sec - " , sequential_total_runtime)
 
     rtree = RTree()
-    print("build R-Tree: ")
+    print("build R-Tree for BBS: ")
     
     
     for point in tqdm.tqdm(task2_data):
@@ -138,7 +138,7 @@ with open(output_file, 'w') as file:
     rtree_dq_two = RTree()
     print("build Two R-Tree: ")
     for point in tqdm.tqdm(task2_data):
-        #Trying to split data into two equall propotion as much as possible
+        #Trying to split data into two equal propotion as much as possible
         if point['x'] <= 415 :
             rtree_dq_one.insert(rtree_dq_one.root, point)
         else:
@@ -148,6 +148,6 @@ with open(output_file, 'w') as file:
     bbs_dq_total_runtime = time.time() - start
     comment = f"Divide and conquer BBS search is {calculate_time_difference(bbs_dq_total_runtime ,bbs_total_runtime)} percent faster than normal bbs search"
     
-    Save_File_Location('output_files/task_2_bbs_with_divide_and_conquer.txt' , bbs_dq_resp , "BBS Search" , bbs_total_runtime , comment)
+    Save_File_Location('output_files/task_2_bbs_with_divide_and_conquer.txt' , bbs_dq_resp , "BBS Search" , bbs_dq_total_runtime , comment)
     
     print("Divide and conquer BBS Skyline Total runtime in sec - " , bbs_dq_total_runtime)

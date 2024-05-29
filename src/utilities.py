@@ -1,5 +1,5 @@
 from math import sin, cos, sqrt, atan2, radians
-
+import numpy as np
 def load_data(file_path):
     points = []
     with open(file_path) as dataset:
@@ -63,25 +63,13 @@ def mbrpriority(node):
     return node.MBR['x1'] + node.MBR['y2']
 
 def calculate_time_difference(time1, time2):
+    if time2 == 0:
+        return 0 
     difference = time2 - time1
     timer_diff = (difference / time2) * 100
     return timer_diff
 
-def get_distance_km(lat_one , lon_one , lat_two , lon_two):
-    R = 6373.0
 
-    lat1 = radians(lat_one)
-    lon1 = radians(lon_one)
-    lat2 = radians(lat_two)
-    lon2 = radians(lon_two)
-
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
-
-    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
-
-    return R * c
     
 def divide_dataset(data_points, dimension='x'):
     # Sort data points based on the chosen dimension
@@ -89,3 +77,22 @@ def divide_dataset(data_points, dimension='x'):
     # Divide into two subspaces
     mid_index = len(sorted_points) // 2
     return sorted_points[:mid_index], sorted_points[mid_index:]
+
+def euclidean_distance(point1, point2):
+    """
+    Calculate the Euclidean distance between two points in n-dimensional space.
+    
+    Args:
+    point1 (array): Coordinates of the first point.
+    point2 (array): Coordinates of the second point.
+    
+    Returns:
+    float: The Euclidean distance between the two points.
+    """
+    point1_array = np.array([float(point1['x']), float(point1['y'])])
+    point2_array = np.array([float(point2['x']), float(point2['y'])])
+
+    # Calculate the Euclidean distance
+    distance = np.sqrt(np.sum((point1_array - point2_array) ** 2))
+    
+    return distance  

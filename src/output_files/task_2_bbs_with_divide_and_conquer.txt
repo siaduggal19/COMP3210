@@ -1,10 +1,12 @@
-BBS Search Total runtime in sec - 0.0019986629486083984 
+BBS Search Total runtime in sec - 0.002039194107055664 
 
 id : 3 , x : 100.39 ,'y': 53.77 
+id : 11862 , x : 106.39 ,'y': 50.11 
 id : 31034 , x : 100.81 ,'y': 50.38 
-id : 136770 , x : 416.55 ,'y': 50.09 
 id : 142350 , x : 100.01 ,'y': 54.22 
+id : 159135 , x : 111.41 ,'y': 50.09 
 id : 201884 , x : 100.8 ,'y': 50.96 
 id : 233553 , x : 100.66 ,'y': 51.36 
+id : 266111 , x : 155.41 ,'y': 50.0 
 id : 285868 , x : 100.0 ,'y': 108.94 
-Divide and conquer BBS search is -650.5666229273529 percent faster than normal bbs search
+Divide and conquer BBS search is 32.09210003969829 percent faster than normal bbs search

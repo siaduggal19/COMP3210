@@ -2,22 +2,26 @@
 import heapq
 import math
 import numpy as np
+from utilities import euclidean_distance
 def bf_search(rtree , query_point):
     priority_queue = []
     heapq.heappush(priority_queue, (0, rtree.root))
     min_distance = float('inf')
+    nearest_point = None
+    min_distance = float('inf')
+
+
     while priority_queue:
-        distance, node = heapq.heappop(priority_queue)
-        
+        _, node = heapq.heappop(priority_queue)
         if node.is_leaf():
-            nearest_point = None
-            min_distance = float('inf')
+            
             for data_point in node.data_points:
-                point_distance = math.sqrt((data_point['x'] - query_point['x']) ** 2 + (data_point['y'] - query_point['y']) ** 2)
+                #point_distance = math.sqrt((data_point['x'] - query_point['x']) ** 2 + (data_point['y'] - query_point['y']) ** 2)
+                point_distance = euclidean_distance(data_point , query_point)
                 if point_distance < min_distance:
                     min_distance = point_distance
                     nearest_point = data_point
-            return nearest_point, min_distance
+
         else:
             for child in node.child_nodes:
                 # Proper calculation of MBR distance should be implemented here
@@ -28,10 +32,10 @@ def bf_search(rtree , query_point):
                 distance =point_to_mbr_distance(query_point, child)
                 if distance < min_distance:
                     heapq.heappush(priority_queue, (distance, child))
-
+    return nearest_point, min_distance
 
 def heuristic(node, target):
-    # Define a heuristic function. This is an example using Euclidean distance.
+    # Define a heuristic functiheuristicon. This is an example using Euclidean distance.
     # Modify as needed for your specific use case.
     x_center = (node.MBR['x1'] + node.MBR['x2']) / 2
     

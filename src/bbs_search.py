@@ -27,7 +27,7 @@ def bbs_search(root):
                 #checking if the lower bound of the mbr of the child doesn't dominate any point in the skyline
                 #if the skyline data doesn't dominate the lowerbound we assume that there might be some skyline point in the MBR  
                 #and if the any of the skyline points dominates the lower bound of the rectangle we don't push the child to the sorted queue             
-                if not is_dominated({'x' : child.MBR['x1'],'y' : child.MBR['y2']}, [point for point in skyline]):
+                if not is_dominated({'x' : child.MBR['x1'],'y' : child.MBR['y1']}, [point for point in skyline]):
                     #the lower bound is sumed so we can use that to order the heap
                     lowerBound = mbrpriority(child)
                     heapq.heappush(heap, (lowerBound, child))
@@ -49,7 +49,7 @@ async  def bbs_search_divide_conquer(tree_one , tree_two):
     for point_one in skyline_two :
         is_dominated = False
         for point_two in skyline_one :
-            if point_two['y'] < point_one['y']:
+            if point_two['y'] < point_one['y'] and point_two['x'] < point_one['x']:
                 is_dominated = True
                 break
         if not is_dominated:
