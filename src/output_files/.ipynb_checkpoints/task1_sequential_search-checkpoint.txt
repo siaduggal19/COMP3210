@@ -193,5 +193,4 @@ id=15774, x=29.58, y=82.75 query id =197
 id=42040, x=10.01, y=93.67 query id =198
 id=50824, x=16.51, y=152.72 query id =199
 id=128803, x=42.12, y=137.17 query id =200
-Total running time: 181.55 seconds
-Average time per query: 0.9310 seconds
+Total running time: 146.04 seconds

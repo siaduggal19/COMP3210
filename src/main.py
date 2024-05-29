@@ -17,23 +17,24 @@ if __name__ == "__main__":
     print("Query points loaded.")
     
 
-    #sequential search
-    print("start sequential search")
-    start_time= time.time()
-    result2=[]
-    for q_point in query_points:
-        nearest_point, distance,q_point = sequential_scan_nearest_neighbor(q_point, data_points)
-        #print("he",nearest_point)
-        result2.append(f"id={nearest_point['id']}, x={nearest_point['x']}, y={nearest_point['y']} query id ={q_point['id']}")
-
-    seq_time= time.time()- start_time
-    print("Sequential search time: %.4fsec" % seq_time)
-    output_file = "output_files/task1_sequential_search.txt"
-    with open(output_file, 'w') as file:
-        for result in result2:
-            file.write(result + '\n')
-        file.write(f"Total running time: {seq_time:.2f} seconds\n")
-        
+#sequential search
+print("start sequential search")
+start_time= time.time()
+result2=[]
+for q_point in query_points:
+    nearest_point, distance = sequential_scan_nearest_neighbor(q_point, data_points)
+    # print("he",nearest_point)
+    result2.append(f"id={nearest_point['id']}, x={nearest_point['x']}, y={nearest_point['y']} query id ={q_point['id']}")
+    
+seq_time= time.time()- start_time
+average_time = seq_time / len(query_points)
+print("Sequential search time: %.4fsec" % seq_time)
+output_file = "output_files/task1_sequential_search.txt"
+with open(output_file, 'w') as file:
+    for result in result2:
+        file.write(result + '\n')
+    file.write(f"Total running time: {seq_time:.2f} seconds\n")
+    file.write(f"Average time per query: {average_time:.4f} seconds\n")   
     
 
     #create r-tree
@@ -83,9 +84,12 @@ if __name__ == "__main__":
     start_time = time.time()
     result2=[]
     for query in tqdm.tqdm(query_points):
-        final_nearest,dist=bf_search_divide_conquer(rtree1 , rtree2 , query)
+        
+        final_nearest,dist=bf_search_divide_conquer(rtree1 , rtree2, query)
+            
         result2.append(f"id={final_nearest['id']}, x={final_nearest['x']}, y={final_nearest['y']} for query {query['id']}")
-
+        
+            
     total_time = time.time() - start_time
     average_time = total_time / len(query_points)
     print(f"Total running time: {total_time:.2f} seconds")

@@ -20,8 +20,8 @@ def sequential_scan_nearest_neighbor(query_point, data_points):
         if distance < min_distance:
             min_distance = distance
             nearest_point = point
-        #print("query point", q_point, " nearest point ",nearest_point, "min distance", min_distance)        
-    return nearest_point, min_distance ,query_point
+        #print("query point", query_point, " nearest point ",nearest_point, "min distance", min_distance)        
+    return nearest_point, min_distance
 
 
 
@@ -88,4 +88,5 @@ def euclidean_distance(point1, point2):
 
     # Calculate the Euclidean distance
     distance = np.sqrt(np.sum((point1_array - point2_array) ** 2))
+    
     return distance  
