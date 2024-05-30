@@ -1,4 +1,4 @@
-Sequential BBS Search Total runtime in sec - 2.3549015522003174 
+Sequential BBS Search Total runtime in sec - 4.684653282165527 
 
 id : 3 , x : 100.39 ,'y': 53.77 
 id : 11862 , x : 106.39 ,'y': 50.11 
